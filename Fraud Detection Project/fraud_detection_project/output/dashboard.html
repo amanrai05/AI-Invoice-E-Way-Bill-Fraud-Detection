@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Fraud Detection Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; }
+  header { background: linear-gradient(135deg, #1e3a8a, #0f172a);
+            padding: 24px 32px; border-bottom: 2px solid #334155; }
+  header h1 { font-size: 1.8rem; color: #60a5fa; }
+  header p  { font-size: 0.85rem; color: #94a3b8; margin-top: 4px; }
+  .kpi-bar { display: flex; gap: 16px; padding: 24px 32px; flex-wrap: wrap; }
+  .kpi { background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+          padding: 18px 24px; flex: 1; min-width: 160px; }
+  .kpi .val { font-size: 2rem; font-weight: 700; }
+  .kpi .lbl { font-size: 0.78rem; color: #94a3b8; margin-top: 4px; text-transform: uppercase; }
+  .kpi.critical .val { color: #f87171; }
+  .kpi.high .val     { color: #fb923c; }
+  .kpi.medium .val   { color: #facc15; }
+  .kpi.ok .val       { color: #4ade80; }
+  .section { padding: 0 32px 32px; }
+  h2 { font-size: 1.1rem; color: #93c5fd; margin-bottom: 14px; padding-top: 8px;
+        border-top: 1px solid #1e293b; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { background: #1e3a8a; color: #bfdbfe; padding: 10px 12px; text-align: left; }
+  td { padding: 9px 12px; border-bottom: 1px solid #1e293b; }
+  tr:hover td { background: #1e293b; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 999px;
+            font-size: 0.75rem; font-weight: 600; }
+  .CRITICAL { background: #7f1d1d; color: #fca5a5; }
+  .HIGH     { background: #7c2d12; color: #fdba74; }
+  .MEDIUM   { background: #713f12; color: #fde68a; }
+  .LOW      { background: #14532d; color: #86efac; }
+  .score-bar { display: flex; align-items: center; gap: 8px; }
+  .bar-outer { background: #334155; border-radius: 4px; height: 8px; width: 100px; }
+  .bar-inner { height: 8px; border-radius: 4px; }
+  footer { padding: 16px 32px; color: #475569; font-size: 0.78rem;
+            border-top: 1px solid #1e293b; text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🛡️ AI Invoice &amp; E-Way Bill Fraud Detection</h1>
+  <p>Participant: Aman Kumar &nbsp;|&nbsp; Roll No: 2310991770 &nbsp;|&nbsp;
+     Generated: 24 Apr 2026 13:32</p>
+</header>
+
+<div class="kpi-bar">
+  <div class="kpi ok">
+    <div class="val">100</div>
+    <div class="lbl">Total Invoices</div>
+  </div>
+  <div class="kpi critical">
+    <div class="val">1</div>
+    <div class="lbl">Critical Risk</div>
+  </div>
+  <div class="kpi high">
+    <div class="val">1</div>
+    <div class="lbl">High Risk</div>
+  </div>
+  <div class="kpi medium">
+    <div class="val">5</div>
+    <div class="lbl">Medium Risk</div>
+  </div>
+  <div class="kpi ok">
+    <div class="val">7.0%</div>
+    <div class="lbl">Flagged Rate</div>
+  </div>
+  <div class="kpi ok">
+    <div class="val">₹561,434</div>
+    <div class="lbl">Total Value at Risk</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>🚨 Flagged Transactions</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Invoice No</th>
+        <th>Vendor</th>
+        <th>Date</th>
+        <th>Amount (₹)</th>
+        <th>Risk Score</th>
+        <th>Risk Level</th>
+        <th>Triggered Rules</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><b>INV-2024-000605</b></td>
+        <td>Vendor_25 Pvt Ltd</td>
+        <td>2024-05-29</td>
+        <td>₹468,541.74</td>
+        <td>
+          <div class="score-bar">
+            <div class="bar-outer"><div class="bar-inner" style="width:86%;background:#ef4444"></div></div>
+            <span style="color:#ef4444">86.9</span>
+          </div>
+        </td>
+        <td><span class="badge CRITICAL">CRITICAL</span></td>
+        <td><small>amount_spike, tax_mismatch, new_vendor_high_value</small></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><b>INV-2024-000633</b></td>
+        <td>Vendor_44 Pvt Ltd</td>
+        <td>2024-02-10</td>
+        <td>₹12,442.43</td>
+        <td>
+          <div class="score-bar">
+            <div class="bar-outer"><div class="bar-inner" style="width:55%;background:#f97316"></div></div>
+            <span style="color:#f97316">55.2</span>
+          </div>
+        </td>
+        <td><span class="badge HIGH">HIGH</span></td>
+        <td><small>eway_expired</small></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><b>INV-2024-000683</b></td>
+        <td>Vendor_37 Pvt Ltd</td>
+        <td>2024-09-28</td>
+        <td>₹33,320.81</td>
+        <td>
+          <div class="score-bar">
+            <div class="bar-outer"><div class="bar-inner" style="width:53%;background:#eab308"></div></div>
+            <span style="color:#eab308">53.9</span>
+          </div>
+        </td>
+        <td><span class="badge MEDIUM">MEDIUM</span></td>
+        <td><small>tax_mismatch</small></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><b>INV-2024-000700</b></td>
+        <td>Vendor_31 Pvt Ltd</td>
+        <td>2024-12-27</td>
+        <td>₹6,095.39</td>
+        <td>
+          <div class="score-bar">
+            <div class="bar-outer"><div class="bar-inner" style="width:51%;background:#eab308"></div></div>
+            <span style="color:#eab308">51.2</span>
+          </div>
+        </td>
+        <td><span class="badge MEDIUM">MEDIUM</span></td>
+        <td><small>tax_mismatch</small></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><b>INV-2024-000644</b></td>
+        <td>Vendor_27 Pvt Ltd</td>
+        <td>2024-04-06</td>
+        <td>₹7,081.08</td>
+        <td>
+          <div class="score-bar">
+            <div class="bar-outer"><div class="bar-inner" style="width:51%;background:#eab308"></div></div>
+            <span style="color:#eab308">51.0</span>
+          </div>
+        </td>
+        <td><span class="badge MEDIUM">MEDIUM</span></td>
+        <td><small>invalid_gstin</small></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><b>INV-2024-000620</b></td>
+        <td>Vendor_27 Pvt Ltd</td>
+        <td>2024-12-07</td>
+        <td>₹8,564.75</td>
+        <td>
+          <div class="score-bar">
+            <div class="bar-outer"><div class="bar-inner" style="width:50%;background:#eab308"></div></div>
+            <span style="color:#eab308">50.2</span>
+          </div>
+        </td>
+        <td><span class="badge MEDIUM">MEDIUM</span></td>
+        <td><small>invalid_gstin</small></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><b>INV-2024-000628</b></td>
+        <td>Vendor_12 Pvt Ltd</td>
+        <td>2024-06-03</td>
+        <td>₹25,388.01</td>
+        <td>
+          <div class="score-bar">
+            <div class="bar-outer"><div class="bar-inner" style="width:47%;background:#eab308"></div></div>
+            <span style="color:#eab308">47.6</span>
+          </div>
+        </td>
+        <td><span class="badge MEDIUM">MEDIUM</span></td>
+        <td><small>invalid_gstin</small></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  AI Invoice &amp; E-Way Bill Fraud Detection &nbsp;|&nbsp;
+  Aman Kumar &nbsp;|&nbsp; Roll No: 2310991770
+</footer>
+</body>
+</html>
