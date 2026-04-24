@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fraud Detection | Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">🛡️</div>
+                <div class="logo-text">AI Guard</div>
+            </div>
+            <nav>
+                <a href="#" class="nav-item active" data-view="dashboard">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-view="upload">
+                    <span class="icon">📤</span> Upload Invoices
+                </a>
+                <a href="#" class="nav-item" data-view="analytics">
+                    <span class="icon">📈</span> Risk Analytics
+                </a>
+                <a href="#" class="nav-item" data-view="settings">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-pill">
+                    <div class="avatar">AK</div>
+                    <div class="user-info">
+                        <p class="user-name">Aman Kumar</p>
+                        <p class="user-role">Lead Auditor</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="top-bar">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search invoices, vendors..." id="global-search">
+                </div>
+                <div class="top-actions">
+                    <button class="btn-primary" onclick="showUploadModal()">+ New Analysis</button>
+                    <div class="notification-bell">🔔<span class="badge"></span></div>
+                </div>
+            </header>
+
+            <div id="view-dashboard" class="view">
+                <div class="page-header">
+                    <h1>Fraud Detection Overview</h1>
+                    <p class="subtitle">Real-time AI analysis of GST invoices & E-Way bills</p>
+                </div>
+
+                <!-- KPI Section -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">Total Processed</span>
+                            <span class="kpi-icon">📄</span>
+                        </div>
+                        <div class="kpi-value" id="stat-total">0</div>
+                        <div class="kpi-trend up">↑ 12% vs last month</div>
+                    </div>
+                    <div class="kpi-card critical">
+                        <div class="kpi-header">
+                            <span class="kpi-title">Critical Risks</span>
+                            <span class="kpi-icon">🚨</span>
+                        </div>
+                        <div class="kpi-value" id="stat-critical">0</div>
+                        <div class="kpi-label">Immediate attention required</div>
+                    </div>
+                    <div class="kpi-card high">
+                        <div class="kpi-header">
+                            <span class="kpi-title">High Risk</span>
+                            <span class="kpi-icon">⚠️</span>
+                        </div>
+                        <div class="kpi-value" id="stat-high">0</div>
+                        <div class="kpi-label">Under investigation</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">Value at Risk</span>
+                            <span class="kpi-icon">💰</span>
+                        </div>
+                        <div class="kpi-value" id="stat-value">₹0</div>
+                        <div class="kpi-label">Total flagged amount</div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="chart-section">
+                    <div class="chart-card">
+                        <h3>Risk Distribution</h3>
+                        <canvas id="riskChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Detection Trends</h3>
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Table Section -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>Recent Flagged Transactions</h3>
+                        <button class="btn-outline">Export CSV</button>
+                    </div>
+                    <table id="invoice-table">
+                        <thead>
+                            <tr>
+                                <th>Invoice No</th>
+                                <th>Vendor</th>
+                                <th>Amount</th>
+                                <th>Risk Score</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoice-tbody">
+                            <!-- Data injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Upload View -->
+            <div id="view-upload" class="view hidden">
+                <div class="upload-container">
+                    <div class="upload-box" id="drop-zone">
+                        <div class="upload-icon">📁</div>
+                        <h2>Upload Invoice CSV</h2>
+                        <p>Drag and drop your file here or <span class="browse">browse</span></p>
+                        <input type="file" id="file-input" hidden accept=".csv">
+                        <div class="file-info hidden" id="file-info">
+                            <span id="filename">filename.csv</span>
+                            <button class="btn-primary" id="btn-analyze">Start AI Analysis</button>
+                        </div>
+                    </div>
+                    <div class="upload-guide">
+                        <h3>Required Columns</h3>
+                        <ul>
+                            <li><code>invoice_number</code>, <code>invoice_date</code></li>
+                            <li><code>vendor_gstin</code>, <code>invoice_amount</code></li>
+                            <li><code>tax_amount</code>, <code>vehicle_number</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Detail -->
+    <div class="modal hidden" id="detail-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modal-body">
+                <!-- Data injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
